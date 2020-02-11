@@ -5,7 +5,7 @@ import json
 
 db = SQLAlchemy()
 # We would change the ENV variable during development and production
-ENV = 'dev'
+ENV = 'prod'
 
 
 def setup_db(app, ENV=ENV):
