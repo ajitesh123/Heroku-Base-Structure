@@ -33,7 +33,7 @@ def get_drinks():
     if len(drinks) == 0:
         abort(404)
 
-    formatted_drinks = [drink.short() for drink in drinks]
+    formatted_drinks = [drink.format() for drink in drinks]
 
     return jsonify({
         'success': True,
@@ -52,7 +52,7 @@ def get_drink_detail(jwt):
     if len(drinks) == 0:
         abort(404)
 
-    formatted_drinks = [drink.long() for drink in drinks]
+    formatted_drinks = [drink.format() for drink in drinks]
 
     return jsonify({
         'success': True,
