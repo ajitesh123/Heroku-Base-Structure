@@ -5,7 +5,7 @@ import json
 
 db = SQLAlchemy()
 # We would change the ENV variable during development and production
-ENV = 'prod'
+ENV = 'dev'
 
 
 def setup_db(app, ENV=ENV):
@@ -21,46 +21,19 @@ def setup_db(app, ENV=ENV):
     db.app = app
 
     db.init_app(app)
+#No create all will be required, as we're using flask_migrate
 
-def db_drop_and_create_all():
-    db.drop_all()
-    db.create_all()
-
-'''
-Drink
-a persistent drink entity, extends the base SQLAlchemy Model
-'''
 class Drink(db.Model):
     __tablename__ = 'Drink'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), unique=True)
-    recipe =  db.Column(db.String(180), nullable=False)
-    price = db.Column(db.Integer)
+    tagline =  db.Column(db.String(180), nullable=False)
 
-
-    def short(self):
-        print(json.loads(self.recipe))
-        new_dict = {}
-        for key in json.loads(self.recipe):
-            if key == 'color':
-                new_dict['color'] = json.loads(self.recipe)[key]
-            elif key == 'parts':
-                new_dict['parts'] = json.loads(self.recipe)[key]
-
-        short_recipe = [new_dict]
-
+    def format(self):
         return {
             'id': self.id,
             'title': self.title,
-            'recipe': short_recipe
-        }
-
-
-    def long(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'recipe': json.loads(self.recipe)
+            'tagline': self.tagline
         }
 
 
@@ -75,6 +48,3 @@ class Drink(db.Model):
 
     def update(self):
         db.session.commit()
-
-    def __repr__(self):
-        return json.dumps(self.short())
